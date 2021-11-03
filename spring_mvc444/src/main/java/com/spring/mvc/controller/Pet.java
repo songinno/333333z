@@ -1,5 +1,5 @@
 package com.spring.mvc.controller;
-
+// => 3. 커맨드 객체 확용하기
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,7 +16,8 @@ public class Pet {
     private String master;
     private String gender;
     //취미 추가
-    private List<String> hobby; // 스트링 배열써도o
+//    private List<String> hobby; // 스트링 배열써도o
+    private String[] hobby; // 스트링 배열써도o
 
     public Pet() {
         System.out.println("커맨드 객체 Pet 생성!!");

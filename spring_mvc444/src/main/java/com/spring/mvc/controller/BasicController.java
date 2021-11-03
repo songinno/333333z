@@ -2,12 +2,14 @@ package com.spring.mvc.controller;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 //역할: 브라우저의 요청을 처리
 @Controller
@@ -71,13 +73,47 @@ public class BasicController {
     }
 
     //근데 받을 데이터가 많아지면?
-    // => 3. 커맨드 객체 확용하기
+    // => 3. 커맨드 객체 확용하기 (Pet 클래스 추가)
     @PostMapping("/req/v3")
     public String v3(Pet petInfo) {
         log.info(petInfo);
 
         return "req_ex/v1";
     }
+    //이제 정보를 보내면, 메세지를 써서 돌려주고싶음.
+
+    //=============== 화면(view)으로 서버데이터 보내기==================//
+    //서버에서 클라이언트화면으로 데이터를 보낼 땐 Model이라는 객체를 활용합니다.
+    @GetMapping("/req/v4")
+    public String v4(Model model) {
+        //랜덤으로 음식 이름을 보내기
+        String[] foods = {"짜장면", "볶음밥", "돈까스", "삼겹살", "햄버거"};
+        int rn = (int) (Math.random() * foods.length);
+        model.addAttribute("f", foods[rn]); //${} 에다가 넣음.
+//        model.addAttribute("foods", Arrays.toString(foods));
+        model.addAttribute("foods", foods);
+        // 이렇게 보내면 서버가 클라이언트한테 배열을 보낸게 아니라 문자 열을 보낸거.
+
+        return "req_ex/result";
+    }
+
+    @GetMapping("/req/v3")
+    public String v5(Pet pet, Model model) {
+        String petName = pet.getPet();
+        int petAge = pet.getAge();
+        String master = pet.getMaster();
+        String gender = pet.getGender();
+        String[] hobby = pet.getHobby();
+
+        model.addAttribute("petName", petName);
+        model.addAttribute("petAge", petAge);
+        model.addAttribute("master", master);
+        model.addAttribute("gender", gender);
+        model.addAttribute("hobby", hobby);
+
+        return "req_ex/pet_info";
+    }
+
 
 
 
